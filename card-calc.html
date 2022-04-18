@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .app {
+      text-align: center;
+
+      max-width: 350px;
+      margin: auto;
+    }
+
+    .details,
+    .score-section {
+      padding: 20px;
+      margin: 25px auto;
+    }
+
+    .shadow {
+      box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px 0px;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    .display {
+      color: red;
+    }
+
+    .score-box {
+      font-size: 20px;
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .form input {
+      width: 275px;
+      margin-bottom: 10px;
+      text-align: center;
+      height: 25px;
+    }
+
+    .button {
+      width: 100px;
+      height: 50px;
+      border: 1px solid black;
+      border-radius: 5px;
+      background-color: #f3f3f3;
+      font-size: 20px;
+      margin: 5px;
+    }
+  </style>
+  <body>
+    <div class="app">
+      <h1>Remaining Cards Score Calculator</h1>
+
+      <div class="details shadow">
+        <p>
+          Enter the cards you have remaining at the end of the round separating
+          each by a space.
+        </p>
+        <ul style="padding: 0">
+          <li>Joker: jk</li>
+          <li>Ace: a</li>
+          <li>King: k</li>
+          <li>Queen: q</li>
+          <li>Jack: j</li>
+          <li>2-10: type the number</li>
+        </ul>
+        <p>Example: 3 5 5 2 j j q jk jk</p>
+      </div>
+
+      <div class="score-section shadow">
+        <div class="score-box">
+          <p>Score</p>
+          <p class="display">0</p>
+        </div>
+        <form action="submit" class="form">
+          <input type="text" class="input" placeholder="Enter cards here" />
+          <button class="button">Calculate</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const button = document.querySelector(".button");
+      const input = document.querySelector(".input");
+      const form = document.querySelector(".form");
+      const display = document.querySelector(".display");
+
+      const parseInput = () => {
+        const cards = input.value.split(" ");
+        const parsedCards = cards.map((card) => card.toLowerCase());
+
+        return parsedCards;
+      };
+
+      const calculate = () => {
+        const cards = parseInput();
+
+        const score = cards.reduce((runningScore, card) => {
+          if ("jqk".includes(card)) {
+            return runningScore + 10;
+          } else if (card === "10") {
+            return runningScore + 10;
+          } else if (card === "a") {
+            return runningScore + 15;
+          } else if (card === "2" || card === "jk") {
+            return runningScore + 20;
+          } else {
+            return runningScore + 5;
+          }
+        }, 0);
+
+        return score;
+      };
+
+      const displayScore = (e) => {
+        e.preventDefault();
+
+        const score = calculate();
+        display.textContent = score;
+      };
+
+      // add click event to calculate button
+      button.addEventListener("click", displayScore);
+      form.addEventListener("submit", displayScore);
+    </script>
+  </body>
+</html>
